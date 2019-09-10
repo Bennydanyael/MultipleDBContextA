@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MultipleDbContext.Models;
 
 namespace MultipleDbContext
 {
@@ -31,6 +33,9 @@ namespace MultipleDbContext
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<ApplicationDbContext>(_option => _option.UseSqlServer(Configuration.GetConnectionString("DefaultConnections")));
+            services.AddDbContext<BookRentalDbContext>(_option => _option.UseSqlServer(Configuration.GetConnectionString("BooksConnections")));
+            services.AddDbContext<StudentRegistrationDbContext>(_option => _option.UseSqlServer(Configuration.GetConnectionString("StuudentsConnections")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
